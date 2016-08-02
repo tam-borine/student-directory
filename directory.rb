@@ -34,13 +34,26 @@ puts "-------------"
 end
 
 def print (students)
-students.each do |student| puts "#{student[:name]} #{student[:cohort]} cohort " end
+students.each_with_index do |student,index| puts "#{index + 1}. #{student[:name]} #{student[:cohort]} cohort " end
+end
+
+def print_if_under12(students)
+students.each_with_index do |student,index| if student[:name].length < 12 
+ puts "#{index + 1}. #{student[:name]} #{student[:cohort]} cohort "
+ end
+end
 end
 
 def print_footer (names)
 puts "Overall, we have #{names.count} great students"
 end
+
+def print_by_first_char_name
+let = gets.chomp
+students.each do |student| if student[:name][0] == let; print(student) end end 
+end
 students = input_students
 print_header
 print(students)
 print_footer(students)
+print_if_under12(students)
