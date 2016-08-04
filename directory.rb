@@ -3,24 +3,24 @@
 def input_students
 puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
-  name = gets.chomp
+  name = STDIN.gets.chomp
 while !name.empty? do
   puts "Please enter the cohort of this student"
-  cohort = gets.chomp
+  cohort = STDIN.gets.chomp
   #while !Date::MONTHNAMES.include? cohort.capitalize do
   	#puts "Please enter a valid month eg. August or Aug"
   	#cohort = gets.chomp
  # end
 
   puts "Please enter their favourite food"
-  food = gets.chomp
+  food = STDIN.gets.chomp
 
     # add the student hash to the array
   @students << {name: name, cohort: cohort, food: food }
   #puts "Now we have #{students.count} students"
   # return the array of students
   puts 'Enter next name'
-  name = gets.chomp
+  name = STDIN.gets.chomp
 
 end
 end
@@ -49,7 +49,7 @@ end
 
 def print_if_1st_char_is (students)
 	puts "What character would you like to name search by?"
-	let = gets.chop
+	let = STDIN.gets.chop
 	students.each_with_index do |student,index| if student[:name][0] == let
 	 puts "#{index + 1}. #{student[:name]} #{student[:cohort]} cohort "
 	 end
@@ -98,14 +98,27 @@ def save_students
 	file.close
 end
 
-def load_students
-	file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+	file = File.open(filename, "r")
 	file.readlines.each do |line|
 		name, cohort, food = line.chomp.split(",")
 		@students << {name: name, cohort: cohort, food: food}
 	end
 	file.close
 end
+
+def try_load_students
+	filename = ARGV.first
+	return if filename.nil?
+	if File.exists?(filename)
+		load_students(filename)
+		puts "Loaded #{@students.count} from #{filename}"
+	else
+		puts "Sorry, #{filename} doesn't exist."
+    exit 
+  end
+end
+
 
 def process selection
 	case selection
@@ -131,13 +144,14 @@ def interactive_menu
   loop do
     #print menu and ask what user wants to do
     print_menu
-    process gets.chomp
+    process STDIN.gets.chomp
   end
 end
 
-interactive_menu
+
 #print_if_under12(students)
 #print_if_1st_char_is (students)
 #sort_by_cohort(students)
-
+try_load_students
+interactive_menu
 
