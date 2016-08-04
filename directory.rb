@@ -16,7 +16,6 @@ while !name.empty? do
   puts "Please enter their favourite food"
   food = gets.chomp
 
-  puts food, cohort, name
     # add the student hash to the array
   students << {name: name, cohort: cohort, food: food }
   #puts "Now we have #{students.count} students"
@@ -29,13 +28,12 @@ end
 end
 
 def print_header
-puts "The students of Villains Academy".center(5)
-puts "-------------".center(80)
+puts "The students of Villains Academy".center(60)
+puts "-------------".center(60)
 end
 
 def print(students)
 index = 0
-puts students
 while index < students.length
  puts "#{index + 1}. #{students[index][:name]} #{students[index][:cohort]} cohort "
 	
@@ -82,5 +80,6 @@ print(students)
 print_footer(students)
 #print_if_under12(students)
 #print_if_1st_char_is (students)
-sort_by_cohort(students)
+#sort_by_cohort(students)
+
 
