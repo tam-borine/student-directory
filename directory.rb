@@ -77,6 +77,7 @@ def print_menu
     puts "2. Sort by cohort"
     puts "3. Show the students"
     puts "4. Save to file"
+    puts "5. Load from file"
     puts "9. to Exit"
 end
 
@@ -97,6 +98,14 @@ def save_students
 	file.close
 end
 
+def load_students
+	file = File.open("students.csv", "r")
+	file.readlines.each do |line|
+		name, cohort, food = line.chomp.split(",")
+		@students << {name: name, cohort: cohort, food: food}
+	end
+	file.close
+end
 
 def process selection
 	case selection
@@ -108,6 +117,8 @@ def process selection
     	show_students
     when '4'
     	save_students
+    when '5'
+    	load_students
     when '9'
     	exit 
     else 
@@ -128,4 +139,5 @@ interactive_menu
 #print_if_under12(students)
 #print_if_1st_char_is (students)
 #sort_by_cohort(students)
+
 
