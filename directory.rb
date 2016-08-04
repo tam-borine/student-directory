@@ -1,5 +1,9 @@
 #require 'Date'
 @students = []
+def append_to_stds(name, cohort, food)
+  @students << {name: name, cohort: cohort, food: food }
+end
+
 def input_students
 puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
@@ -16,13 +20,14 @@ while !name.empty? do
   food = STDIN.gets.chomp
 
     # add the student hash to the array
-  @students << {name: name, cohort: cohort, food: food }
-  #puts "Now we have #{students.count} students"
+  append_to_stds(name, cohort, food)  #puts "Now we have #{students.count} students"
   # return the array of students
   puts 'Enter next name'
   name = STDIN.gets.chomp
 
 end
+
+
 end
 
 def print_header
@@ -102,8 +107,7 @@ def load_students(filename = "students.csv")
 	file = File.open(filename, "r")
 	file.readlines.each do |line|
 		name, cohort, food = line.chomp.split(",")
-		@students << {name: name, cohort: cohort, food: food}
-	end
+		append_to_stds(name, cohort, food)	end
 	file.close
 end
 
