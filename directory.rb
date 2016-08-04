@@ -53,7 +53,7 @@ end
 
 def print_if_1st_char_is (students)
 	puts "What character would you like to name search by?"
-	let = gets.chomp
+	let = gets.chop
 	students.each_with_index do |student,index| if student[:name][0] == let
 	 puts "#{index + 1}. #{student[:name]} #{student[:cohort]} cohort "
 	 end
