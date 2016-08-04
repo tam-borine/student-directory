@@ -74,10 +74,34 @@ def sort_by_cohort(students)
 	puts studenti
 end
 
-students = input_students
-print_header
-print(students)
-print_footer(students)
+def interactive_menu 
+  students = []
+  loop do
+    #print menu and ask what user wants to do
+    puts "1. Input students"
+    puts "2. Sort by cohort"
+    puts "3. Show the students"
+    puts "9. to Exit"
+    selection = gets.chomp
+
+    case selection
+    when '1'
+      students = input_students
+    when '2'
+    	sort_by_cohort(students)
+    when '3'
+    	print_header
+    	print(students)
+    	print_footer(students)
+    when '9'
+    	exit 
+    else 
+    	"I don't know what you meant"
+    end
+  end
+end
+
+interactive_menu
 #print_if_under12(students)
 #print_if_1st_char_is (students)
 #sort_by_cohort(students)
