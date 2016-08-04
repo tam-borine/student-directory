@@ -1,7 +1,6 @@
 #require 'Date'
-
+@students = []
 def input_students
-  students = []
 puts "Please enter the names of the students"
   puts "To finish, just hit return twice"
   name = gets.chomp
@@ -17,14 +16,13 @@ while !name.empty? do
   food = gets.chomp
 
     # add the student hash to the array
-  students << {name: name, cohort: cohort, food: food }
+  @students << {name: name, cohort: cohort, food: food }
   #puts "Now we have #{students.count} students"
   # return the array of students
   puts 'Enter next name'
   name = gets.chomp
 
 end
-  students
 end
 
 def print_header
@@ -32,10 +30,10 @@ puts "The students of Villains Academy".center(60)
 puts "-------------".center(60)
 end
 
-def print(students)
+def print
 index = 0
-while index < students.length
- puts "#{index + 1}. #{students[index][:name]} #{students[index][:cohort]} cohort "
+while index < @students.count
+ puts "#{index + 1}. #{@students[index][:name]} #{@students[index][:cohort]} cohort "
 	
 index += 1
 end
@@ -58,46 +56,56 @@ def print_if_1st_char_is (students)
 	end
 end
 
-def print_footer (students)
-footer =  "Overall, we have #{students.count} great students"
-if students.length == 1
+def print_footer
+footer =  "Overall, we have #{@students.count} great students"
+if @students.length == 1
         puts footer.chop
 else
        puts footer
 end
 end
 
-def sort_by_cohort(students)
-	studenti = students.sort_by do |i|
+def sort_by_cohort
+	studenti = @students.sort_by do |i|
 	 i[:cohort]
 	end
 	puts studenti
 end
 
-def interactive_menu 
-  students = []
-  loop do
-    #print menu and ask what user wants to do
+def print_menu
     puts "1. Input students"
     puts "2. Sort by cohort"
     puts "3. Show the students"
     puts "9. to Exit"
-    selection = gets.chomp
+end
 
-    case selection
+def show_students
+	print_header
+    print
+    print_footer
+end
+
+def process selection
+	case selection
     when '1'
-      students = input_students
+      	input_students
     when '2'
-    	sort_by_cohort(students)
+    	sort_by_cohort
     when '3'
-    	print_header
-    	print(students)
-    	print_footer(students)
+    	show_students
     when '9'
     	exit 
     else 
     	"I don't know what you meant"
     end
+end
+	
+
+def interactive_menu 
+  loop do
+    #print menu and ask what user wants to do
+    print_menu
+    process gets.chomp
   end
 end
 
