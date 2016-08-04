@@ -58,11 +58,11 @@ end
 
 def print_footer
 footer =  "Overall, we have #{@students.count} great students"
-if @students.length == 1
+	if @students.length == 1
         puts footer.chop
-else
+	else
        puts footer
-end
+	end
 end
 
 def sort_by_cohort
@@ -76,6 +76,7 @@ def print_menu
     puts "1. Input students"
     puts "2. Sort by cohort"
     puts "3. Show the students"
+    puts "4. Save to file"
     puts "9. to Exit"
 end
 
@@ -85,6 +86,18 @@ def show_students
     print_footer
 end
 
+def save_students
+	file = File.open("students.csv", "w")
+
+	@students.each do |student|
+		student_data = [student[:name], student[:cohort], student[:food]]
+		csv_line = student_data.join(',')
+		file.puts csv_line
+	end
+	file.close
+end
+
+
 def process selection
 	case selection
     when '1'
@@ -93,6 +106,8 @@ def process selection
     	sort_by_cohort
     when '3'
     	show_students
+    when '4'
+    	save_students
     when '9'
     	exit 
     else 
@@ -113,5 +128,4 @@ interactive_menu
 #print_if_under12(students)
 #print_if_1st_char_is (students)
 #sort_by_cohort(students)
-
 
