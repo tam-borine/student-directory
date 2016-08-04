@@ -93,6 +93,8 @@ def show_students
 end
 
 def save_students
+	puts "What filename do you want to save this file as?"
+	filename = STDIN.gets.chomp
 	file = File.open("students.csv", "w")
 
 	@students.each do |student|
@@ -104,6 +106,10 @@ def save_students
 end
 
 def load_students(filename = "students.csv")
+	if filename = "students.csv"
+		puts "what file do you want to load?"
+		filename = STDIN.gets.chomp
+	end
 	file = File.open(filename, "r")
 	file.readlines.each do |line|
 		name, cohort, food = line.chomp.split(",")
