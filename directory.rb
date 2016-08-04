@@ -134,15 +134,20 @@ def process selection
 	case selection
     when '1'
       	input_students
+      	puts "your input was added, select 3 to see"
     when '2'
     	sort_by_cohort
+    	puts "sorted by cohort"
     when '3'
     	show_students
     when '4'
     	save_students
+    	"students were saved succesfully"
     when '5'
     	load_students
+    	"students were loaded succesfully"
     when '9'
+    	puts "Quitting the program"
     	exit 
     else 
     	"I don't know what you meant"
