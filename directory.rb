@@ -95,7 +95,7 @@ end
 def save_students
 	puts "What filename do you want to save this file as?"
 	filename = STDIN.gets.chomp
-	file = File.open("students.csv", "w")
+	file = File.open(filename, "w")
 
 	@students.each do |student|
 		student_data = [student[:name], student[:cohort], student[:food]]
@@ -106,15 +106,14 @@ def save_students
 end
 
 def load_students(filename = "students.csv")
-	if filename = "students.csv"
+	if filename == "students.csv"
 		puts "what file do you want to load?"
 		filename = STDIN.gets.chomp
 	end
-	file = File.open(filename, "r")
-	file.readlines.each do |line|
-		name, cohort, food = line.chomp.split(",")
-		append_to_stds(name, cohort, food)	end
-	file.close
+  puts filename
+	File.open(filename, "r") {|line|
+		name, cohort, food = line.chomp.split(",") #############################EDITING HERE #############################
+		append_to_stds(name, cohort, food)}
 end
 
 def try_load_students
