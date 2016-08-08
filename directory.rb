@@ -1,5 +1,6 @@
-#require 'Date'
+require 'Date'
 require 'CSV'
+puts File.read(__FILE__)
 @students = []
 def append_to_stds(name, cohort, food)
   @students << {name: name, cohort: cohort, food: food }
@@ -12,23 +13,19 @@ puts "Please enter the names of the students"
 while !name.empty? do
   puts "Please enter the cohort of this student"
   cohort = STDIN.gets.chomp
-  #while !Date::MONTHNAMES.include? cohort.capitalize do
-        #puts "Please enter a valid month eg. August or Aug"
-        #cohort = gets.chomp
- # end
+  while !Date::MONTHNAMES.include? cohort.capitalize do
+        puts "Please enter a valid month eg. August or Aug"
+        cohort = gets.chomp
+  end
 
   puts "Please enter their favourite food"
   food = STDIN.gets.chomp
 
-    # add the student hash to the array
-  append_to_stds(name, cohort, food)  #puts "Now we have #{students.count} students"
-  # return the array of students
+  append_to_stds(name, cohort, food)
+  #puts "Now we have #{students.count} students"
   puts 'Enter next name'
   name = STDIN.gets.chomp
-
 end
-
-
 end
 
 def print_header
@@ -45,13 +42,13 @@ index += 1
 end
 end
 
-#def print_if_under12(students)
-#quit if students.empty?
-#students.each_with_index do |student,index| if student[:name].length < 12
- #puts "#{index + 1}. #{student[:name]} #{student[:cohort]} cohort "
- #end
-#end
-#end
+def print_if_under12(students)
+quit if students.empty?
+students.each_with_index do |student,index| if student[:name].length < 12
+ puts "#{index + 1}. #{student[:name]} #{student[:cohort]} cohort "
+ end
+end
+end
 
 def print_if_1st_char_is (students)
         puts "What character would you like to name search by?"
@@ -96,21 +93,11 @@ end
 def save_students
         puts "What filename do you want to save this file as?"
         filename = STDIN.gets.chomp
-        #file = File.open(filename, "w")
-
         CSV.open(filename, "wb") do |csv|
           @students.each do |student|
         csv << [student[:name], student[:cohort], student[:food]]
         end
-  # ...
         end
-
-      #  @students.each do |student|
-       #         student_data = [student[:name], student[:cohort], student[:food]]
-         #       csv_line = student_data.join(',')
-        #        file.puts csv_line
-        #end
-        #file.close
 end
 
 def load_students(filename = "students.csv")
@@ -122,7 +109,7 @@ def load_students(filename = "students.csv")
         File.open(filename, "r") {|file|
           file.each do |line|
                 puts line
-                name, cohort, food = line.chomp.split(",") #############################EDITING HERE #############################
+                name, cohort, food = line.chomp.split(",")
                 append_to_stds(name, cohort, food)
               end
             }
@@ -180,4 +167,5 @@ end
 #sort_by_cohort(students)
 #try_load_students
 interactive_menu
+
 
