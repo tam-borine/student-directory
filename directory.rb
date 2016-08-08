@@ -1,4 +1,5 @@
 #require 'Date'
+require 'CSV'
 @students = []
 def append_to_stds(name, cohort, food)
   @students << {name: name, cohort: cohort, food: food }
@@ -12,8 +13,8 @@ while !name.empty? do
   puts "Please enter the cohort of this student"
   cohort = STDIN.gets.chomp
   #while !Date::MONTHNAMES.include? cohort.capitalize do
-  	#puts "Please enter a valid month eg. August or Aug"
-  	#cohort = gets.chomp
+        #puts "Please enter a valid month eg. August or Aug"
+        #cohort = gets.chomp
  # end
 
   puts "Please enter their favourite food"
@@ -38,8 +39,8 @@ end
 def print
 index = 0
 while index < @students.count
- puts "#{index + 1}. #{@students[index][:name]} #{@students[index][:cohort]} cohort "
-	
+ puts "#{index + 1}. #{@students[index][:name]} #{@students[index][:cohort]} #{@students[index][:food]} cohort "
+
 index += 1
 end
 end
@@ -53,28 +54,28 @@ end
 #end
 
 def print_if_1st_char_is (students)
-	puts "What character would you like to name search by?"
-	let = STDIN.gets.chop
-	students.each_with_index do |student,index| if student[:name][0] == let
-	 puts "#{index + 1}. #{student[:name]} #{student[:cohort]} cohort "
-	 end
-	end
+        puts "What character would you like to name search by?"
+        let = STDIN.gets.chop
+        students.each_with_index do |student,index| if student[:name][0] == let
+         puts "#{index + 1}. #{student[:name]} #{student[:cohort]} cohort "
+         end
+        end
 end
 
 def print_footer
 footer =  "Overall, we have #{@students.count} great students"
-	if @students.length == 1
+        if @students.length == 1
         puts footer.chop
-	else
+        else
        puts footer
-	end
+        end
 end
 
 def sort_by_cohort
-	studenti = @students.sort_by do |i|
-	 i[:cohort]
-	end
-	puts studenti
+        studenti = @students.sort_by do |i|
+         i[:cohort]
+        end
+        puts studenti
 end
 
 def print_menu
@@ -87,72 +88,83 @@ def print_menu
 end
 
 def show_students
-	print_header
+        print_header
     print
     print_footer
 end
 
 def save_students
-	puts "What filename do you want to save this file as?"
-	filename = STDIN.gets.chomp
-	file = File.open(filename, "w")
+        puts "What filename do you want to save this file as?"
+        filename = STDIN.gets.chomp
+        #file = File.open(filename, "w")
 
-	@students.each do |student|
-		student_data = [student[:name], student[:cohort], student[:food]]
-		csv_line = student_data.join(',')
-		file.puts csv_line
-	end
-	file.close
+        CSV.open(filename, "wb") do |csv|
+          @students.each do |student|
+        csv << [student[:name], student[:cohort], student[:food]]
+        end
+  # ...
+        end
+
+      #  @students.each do |student|
+       #         student_data = [student[:name], student[:cohort], student[:food]]
+         #       csv_line = student_data.join(',')
+        #        file.puts csv_line
+        #end
+        #file.close
 end
 
 def load_students(filename = "students.csv")
-	if filename == "students.csv"
-		puts "what file do you want to load?"
-		filename = STDIN.gets.chomp
-	end
+        if filename == "students.csv"
+                puts "what file do you want to load?"
+                filename = STDIN.gets.chomp
+        end
   puts filename
-	File.open(filename, "r") {|line|
-		name, cohort, food = line.chomp.split(",") #############################EDITING HERE #############################
-		append_to_stds(name, cohort, food)}
+        File.open(filename, "r") {|file|
+          file.each do |line|
+                puts line
+                name, cohort, food = line.chomp.split(",") #############################EDITING HERE #############################
+                append_to_stds(name, cohort, food)
+              end
+            }
 end
 
 def try_load_students
-	filename = ARGV.first
-	return if filename.nil?
-	if File.exists?(filename)
-		load_students(filename)
-		puts "Loaded #{@students.count} from #{filename}"
-	else
-		puts "Sorry, #{filename} doesn't exist."
+        filename = ARGV.first
+        return if filename.nil?
+        if File.exists?(filename)
+                load_students(filename)
+                puts "Loaded #{@students.count} from #{filename}"
+        else
+                puts "Sorry, #{filename} doesn't exist."
     exit 
   end
 end
 
 
 def process selection
-	case selection
+    case selection
     when '1'
-      	input_students
-      	puts "your input was added, select 3 to see"
+        input_students
+        puts "your input was added, select 3 to see"
     when '2'
-    	sort_by_cohort
-    	puts "sorted by cohort"
+        sort_by_cohort
+        puts "sorted by cohort"
     when '3'
-    	show_students
+        show_students
     when '4'
-    	save_students
-    	"students were saved succesfully"
+        save_students
+        "students were saved succesfully"
     when '5'
-    	load_students
-    	"students were loaded succesfully"
+        load_students
+        "students were loaded succesfully"
     when '9'
-    	puts "Quitting the program"
-    	exit 
+        puts "Quitting the program"
+        exit 
     else 
-    	"I don't know what you meant"
+        "I don't know what you meant"
     end
 end
-	
+
 
 def interactive_menu 
   loop do
@@ -166,6 +178,6 @@ end
 #print_if_under12(students)
 #print_if_1st_char_is (students)
 #sort_by_cohort(students)
-try_load_students
+#try_load_students
 interactive_menu
 
